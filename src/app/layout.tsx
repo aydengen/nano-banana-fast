@@ -24,13 +24,13 @@ const permanentMarker = Permanent_Marker({
 })
 
 export const metadata: Metadata = {
-  title: "Nano Banana",
-  description: "Nano Banana",
-  keywords: ['Nano Banana', 'Nano Banana AI', 'Nano Banana Image', 'Nano Banana Image Generation'],
-  authors: [{ name: "Ayden", url: "https://aydengen.com" }],
+  title: "时光照相馆",
+  description: "时光照相馆",
+  keywords: ['Nano Banana', 'Nano Banana AI', 'Nano Banana Image', 'Nano Banana Image Generation', '时光照相馆'],
+  authors: [{ name: "ayden", url: "https://aydengen.com" }],
   openGraph: {
-    title: "Nano Banana",
-    description: "Nano Banana",
+    title: "时光照相馆",
+    description: "时光照相馆",
     type: "website",
   },
 };
