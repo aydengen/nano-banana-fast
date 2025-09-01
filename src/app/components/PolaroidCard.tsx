@@ -51,6 +51,7 @@ const PolaroidCard: React.FC<PolaroidCardProps> = ({ imageUrl, caption, status, 
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const lastShakeTime = useRef(0);
     const lastVelocity = useRef({ x: 0, y: 0 });
+    const imgRef = useRef<HTMLImageElement | null>(null);
 
     // Reset states when the image URL changes or status goes to pending.
     useEffect(() => {
@@ -61,6 +62,12 @@ const PolaroidCard: React.FC<PolaroidCardProps> = ({ imageUrl, caption, status, 
         if (status === 'done' && imageUrl) {
             setIsDeveloped(false);
             setIsImageLoaded(false);
+        }
+        if (status === 'done' && imageUrl && imgRef.current) {
+            const imgEl = imgRef.current;
+            if (imgEl.complete && imgEl.naturalWidth > 0) {
+                setIsImageLoaded(true);
+            }
         }
     }, [imageUrl, status]);
 
@@ -154,6 +161,7 @@ const PolaroidCard: React.FC<PolaroidCardProps> = ({ imageUrl, caption, status, 
 
                         {/* The Image - fades in and color corrects */}
                         <img
+                            ref={imgRef}
                             key={imageUrl}
                             src={imageUrl}
                             alt={caption}
