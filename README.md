@@ -1,6 +1,10 @@
 # 时光照相馆
 > 看看不同时光里的自己
 
+<div style="text-align: center;">
+  <img src="https://raw.githubusercontent.com/aydengen/nano-banana-fast/refs/heads/main/public/%E6%97%B6%E5%85%89%E4%B8%93%E8%BE%91.jpg" alt="Preview" />
+</div>
+
 “时光照相馆”是一款基于 Next.js 的开源小应用：上传一张照片，AI 为你生成 1950s/60s/70s/80s/90s/00s 六个年代风格的写真，从服饰、发型到色彩与胶片颗粒感，尽量还原每个时代的独特气质。支持单张下载与相册页一键打包下载。
 
 ## 功能特性
