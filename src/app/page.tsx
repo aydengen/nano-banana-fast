@@ -7,6 +7,7 @@ import { createAlbumPage } from '@/app/lib/albumUtils';
 import Footer from '@/app/components/Footer';
 
 const DECADES = ['1950s', '1960s', '1970s', '1980s', '1990s', '2000s'];
+const LIMIT = 6;
 
 // Pre-defined positions for a scattered look on desktop
 const POSITIONS = [
@@ -85,7 +86,7 @@ export default function Home() {
     });
     setGeneratedImages(initialImages);
 
-    const concurrencyLimit = 2; // Process two decades at a time
+    const concurrencyLimit = LIMIT; // Process two decades at a time
     const decadesQueue = [...DECADES];
 
     const processDecade = async (decade: string) => {
