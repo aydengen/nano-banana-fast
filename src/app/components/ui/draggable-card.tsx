@@ -114,7 +114,6 @@ export const DraggableCardBody = ({
 
         animate(info.point.x, info.point.x + currentVelocityX * 0.3, {
           duration: 0.8,
-          // @ts-ignore
           ease: [0.2, 0, 0, 1],
           bounce,
           type: "spring",
@@ -125,7 +124,6 @@ export const DraggableCardBody = ({
 
         animate(info.point.y, info.point.y + currentVelocityY * 0.3, {
           duration: 0.8,
-          // @ts-ignore
           ease: [0.2, 0, 0, 1],
           bounce,
           type: "spring",

@@ -54,7 +54,7 @@ const useMediaQuery = (query: string) => {
 export default function Home() {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [generatedImages, setGeneratedImages] = useState<Record<string, GeneratedImage>>({});
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [, setIsLoading] = useState<boolean>(false);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [appState, setAppState] = useState<'idle' | 'image-uploaded' | 'generating' | 'results-shown'>('idle');
   const dragAreaRef = useRef<HTMLDivElement>(null);

@@ -34,7 +34,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const [, mimeType, base64Data] = match;
+    // const [, mimeType, base64Data] = match;
 
     let resultUrl: string | null = null;
     let attempt = 0;
