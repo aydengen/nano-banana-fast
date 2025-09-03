@@ -46,7 +46,7 @@ const Placeholder = () => (
 );
 
 
-const PolaroidCard: React.FC<PolaroidCardProps> = ({ imageUrl, caption, status, error, dragConstraintsRef, onShake, onDownload, isMobile }) => {
+const PolaroidCard: React.FC<PolaroidCardProps> = ({ imageUrl, caption, status, dragConstraintsRef, onShake, onDownload, isMobile }) => {
     const [isDeveloped, setIsDeveloped] = useState(false);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const lastShakeTime = useRef(0);
@@ -160,6 +160,7 @@ const PolaroidCard: React.FC<PolaroidCardProps> = ({ imageUrl, caption, status, 
                         />
 
                         {/* The Image - fades in and color corrects */}
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                             ref={imgRef}
                             key={imageUrl}

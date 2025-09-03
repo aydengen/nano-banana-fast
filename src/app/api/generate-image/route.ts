@@ -1,3 +1,5 @@
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+
 // 提取年代
 function extractDecate(prompt: string) {
   const match = prompt.match(/(\d{4}s)/);
@@ -6,6 +8,27 @@ function extractDecate(prompt: string) {
 
 function getFallbackPrompt(decade: string): string {
   return `Create a photograph of the person in this image as if they were living in the ${decade}. The photograph should capture the distinct fashion, hairstyles, and overall atmosphere of that time period. Ensure the final image is a clear photograph that looks authentic to the era.`;
+}
+
+// Get environment variables with Cloudflare support
+function getEnvVars() {
+  // Start from process.env (Node.js / Next dev) defaults
+  let API_KEY = process.env.API_KEY;
+  let API_URL = process.env.API_URL || "https://openrouter.ai/api/v1";
+  let MODEL = process.env.MODEL || "google/gemini-2.5-flash-image-preview:free";
+
+  // If running under Cloudflare, merge known keys from bindings
+  try {
+    const context = getCloudflareContext();
+    const cfEnv = context?.env as unknown as { API_KEY?: string; API_URL?: string; MODEL?: string };
+    API_KEY = cfEnv?.API_KEY || API_KEY;
+    API_URL = cfEnv?.API_URL || API_URL;
+    MODEL = cfEnv?.MODEL || MODEL;
+  } catch {
+    // Not in Cloudflare context
+  }
+
+  return { API_KEY, API_URL, MODEL };
 }
 
 export async function POST(request: Request) {
@@ -18,8 +41,9 @@ export async function POST(request: Request) {
     }
 
     const { imageDataUrl, prompt } = await request.json();
+    const env = getEnvVars();
 
-    if (!process.env.API_KEY) {
+    if (!env.API_KEY) {
       return new Response(
         JSON.stringify({ error: "Missing API_KEY env" }),
         { status: 500, headers: { "Content-Type": "application/json" } },
@@ -51,14 +75,14 @@ export async function POST(request: Request) {
       try {
         const currentPrompt = attempt === 0 ? prompt : getFallbackPrompt(extractDecate(prompt) || "1950s");
 
-        const res = await fetch(process.env.API_URL ? process.env.API_URL + "/chat/completions" : "https://openrouter.ai/api/v1/chat/completions", {
+        const res = await fetch(`${env.API_URL}/chat/completions`, {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${process.env.API_KEY}`,
+            Authorization: `Bearer ${env.API_KEY}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: process.env.MODEL || "google/gemini-2.5-flash-image-preview:free", messages: [{
+            model: env.MODEL, messages: [{
               role: "user", content: [
                 { type: "text", text: currentPrompt },
                 { type: "image_url", image_url: { url: imageDataUrl } },
