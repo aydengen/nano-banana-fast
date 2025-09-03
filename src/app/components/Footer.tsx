@@ -38,6 +38,17 @@ const Footer = () => {
                             @ayden
                         </a>
                     </p>
+                    <p>
+                        Github {' '}
+                        <a
+                            href="https://github.com/aydengen/nano-banana-fast"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-neutral-400 hover:text-blue-400 transition-colors duration-200"
+                        >
+                            @nano-banana-fast
+                        </a>
+                    </p>
                 </div>
 
                 {/* Right Side */}

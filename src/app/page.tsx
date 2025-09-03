@@ -60,6 +60,7 @@ export default function Home() {
   const [appState, setAppState] = useState<'idle' | 'image-uploaded' | 'generating' | 'results-shown'>('idle');
   const dragAreaRef = useRef<HTMLDivElement>(null);
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const IS_LIMITED = process.env.NEXT_PUBLIC_IS_LIMITED === 'true';
 
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -76,6 +77,11 @@ export default function Home() {
 
   const handleGenerateClick = async () => {
     if (!uploadedImage) return;
+
+    if (IS_LIMITED) {
+      alert('非常抱歉，今日额度已用完，请明早 8 点后再试～');
+      return;
+    }
 
     setIsLoading(true);
     setAppState('generating');
@@ -142,6 +148,11 @@ export default function Home() {
 
   const handleRegenerateDecade = async (decade: string) => {
     if (!uploadedImage) return;
+
+    if (IS_LIMITED) {
+      alert('非常抱歉，今日额度已用完，请明早 8 点后再试～');
+      return;
+    }
 
     // Prevent re-triggering if a generation is already in progress
     if (generatedImages[decade]?.status === 'pending') {

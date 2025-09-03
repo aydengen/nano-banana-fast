@@ -10,6 +10,13 @@ function getFallbackPrompt(decade: string): string {
 
 export async function POST(request: Request) {
   try {
+    if (process.env.NEXT_PUBLIC_IS_LIMITED === 'true' || process.env.IS_LIMITED === 'true') {
+      return new Response(
+        JSON.stringify({ error: '非常抱歉，今日额度已用完，请明早 8 点后再试～' }),
+        { status: 429, headers: { "Content-Type": "application/json" } },
+      );
+    }
+
     const { imageDataUrl, prompt } = await request.json();
 
     if (!process.env.API_KEY) {
