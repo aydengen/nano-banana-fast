@@ -78,3 +78,6 @@ MIT
 
 ## 致谢
 感谢原作者 [@ammaar](https://x.com/ammaar)，本项目基于 [Past Forward](https://ai.studio/apps/bundled/past_forward) 修改为 Next.js 和适配 OpenRouter API 版本。
+
+## Star History
+[![Star History Chart](https://api.star-history.com/svg?repos=aydengen/nano-banana-fast&type=Date)](https://www.star-history.com/#aydengen/nano-banana-fast&Date)
