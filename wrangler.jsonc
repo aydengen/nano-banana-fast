@@ -25,5 +25,10 @@
     //   "binding": "NEXT_INC_CACHE_R2_BUCKET",
     //   "bucket_name": "nano-banana-fast"
     // }
-  ]
+  ],
+  "vars": {
+    "GATEWAY_ACCOUNT_ID": "7ad933fcf2d70e34be9bd8836e606c3d",
+    "GATEWAY_ID": "nano-banana-fast",
+    "IS_LIMITED": "false"
+  }
 }

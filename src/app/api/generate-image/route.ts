@@ -10,30 +10,34 @@ function getFallbackPrompt(decade: string): string {
   return `Create a photograph of the person in this image as if they were living in the ${decade}. The photograph should capture the distinct fashion, hairstyles, and overall atmosphere of that time period. Ensure the final image is a clear photograph that looks authentic to the era.`;
 }
 
-// Get environment variables with Cloudflare support
+// Get environment variables from Cloudflare
 function getEnvVars() {
-  // Start from process.env (Node.js / Next dev) defaults
-  let API_KEY = process.env.API_KEY;
-  let API_URL = process.env.API_URL || "https://openrouter.ai/api/v1";
-  let MODEL = process.env.MODEL || "google/gemini-2.5-flash-image-preview:free";
-
-  // If running under Cloudflare, merge known keys from bindings
-  try {
-    const context = getCloudflareContext();
-    const cfEnv = context?.env as unknown as { API_KEY?: string; API_URL?: string; MODEL?: string };
-    API_KEY = cfEnv?.API_KEY || API_KEY;
-    API_URL = cfEnv?.API_URL || API_URL;
-    MODEL = cfEnv?.MODEL || MODEL;
-  } catch {
-    // Not in Cloudflare context
-  }
-
-  return { API_KEY, API_URL, MODEL };
+  const context = getCloudflareContext();
+  const env = context?.env as unknown as { 
+    API_KEY: string;
+    GATEWAY_ACCOUNT_ID: string;
+    GATEWAY_ID: string;
+    MODEL?: string;
+    IS_LIMITED?: string;
+  };
+  
+  // Build AI Gateway URL
+  const API_URL = `https://gateway.ai.cloudflare.com/v1/${env.GATEWAY_ACCOUNT_ID}/${env.GATEWAY_ID}/openrouter/v1`;
+  const MODEL = env.MODEL || "google/gemini-2.5-flash-image-preview:free";
+  
+  return { 
+    API_KEY: env.API_KEY,
+    API_URL,
+    MODEL,
+    IS_LIMITED: env.IS_LIMITED === 'true'
+  };
 }
 
 export async function POST(request: Request) {
   try {
-    if (process.env.NEXT_PUBLIC_IS_LIMITED === 'true' || process.env.IS_LIMITED === 'true') {
+    const env = getEnvVars();
+    
+    if (env.IS_LIMITED) {
       return new Response(
         JSON.stringify({ error: '非常抱歉，今日额度已用完，请明早 8 点后再试～' }),
         { status: 429, headers: { "Content-Type": "application/json" } },
@@ -41,7 +45,6 @@ export async function POST(request: Request) {
     }
 
     const { imageDataUrl, prompt } = await request.json();
-    const env = getEnvVars();
 
     if (!env.API_KEY) {
       return new Response(
